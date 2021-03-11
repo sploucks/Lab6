@@ -1,0 +1,116 @@
+#include <math.h>
+#include <stdio.h>
+
+double getCoordinate();
+double getOrthocenter(double x1, double y1, double x2, double y2, double x3, double y3);;
+double getInnerTriangleArea(double x1, double x2, double x3, double y1, double y2, double y3);
+double getCircumcenter();
+double getNinepoint();
+double getAngle(double leglength1, double leglength2, double oppositelength);
+double getSidelength(double x1, double y1, double x2, double y2);
+
+int main()
+{ 
+  double xcoord1;
+  double xcoord2;
+  double xcoord3;
+  double ycoord1;
+  double ycoord2;
+  double ycoord3;
+  double length12;
+  double length23;
+  double length31;
+  double angle1;
+  double angle2;
+  double angle3;
+  double innerTriangleArea1; //inner triangle area withi A to B
+  double innerTriangleArea2;
+  double innerTriangleArea3;
+  
+  xcoord1 = getCoordinate("X", 1);
+  ycoord1 = getCoordinate("Y", 1);
+  xcoord2 = getCoordinate("X", 2);
+  ycoord2 = getCoordinate("Y", 2);
+  xcoord3 = getCoordinate("X", 3);
+  ycoord3 = getCoordinate("Y", 3);
+  
+  length12 = getSidelength(xcoord1, ycoord1, xcoord2, ycoord2);
+  length23 = getSidelength(xcoord2, ycoord2, xcoord3, ycoord3);
+  length31 = getSidelength(xcoord1, ycoord1, xcoord3, ycoord3);
+  
+  angle1 = getAngle(length12, length31, length23);
+  angle2 = getAngle(length12, length31, length23);
+  angle1 = getAngle(length12, length31, length23);
+ 
+  innerTriangleArea1 = getInnerTriangleArea(xOrtho, yOrtho);
+  innerTriangleArea2 = getInnerTriangleArea(xOrtho, yOrtho);
+  innerTriangleArea3 = getInnerTriangleArea(xOrtho, yOrtho);
+  
+}
+
+double getSidelength(double x1, double y1, double x2, double y2)  
+{
+double length  ;
+
+length = sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2))  ;
+
+return(length);
+}
+
+double getAngle(double leglength1, double leglength2, double oppositelength)
+{
+  double angle;
+  
+  angle = acos((pow(leglength1, 2) + pow(leglength2, 2) - pow(oppositelength, 2)) / (2 * leglength1 * leglength2));
+  
+  return(angle);
+}
+
+double getCoordinate(char plane, int num)
+{
+  double point;
+	printf("Enter %c coordinate #%i ->", plane, num); 
+	scanf("%lf", &point);
+	return point;
+
+double getCircumcenter(double coord1, double coord2, double coord3, double angle1, double angle2, double angle3)
+{
+double coordinate;
+
+coordinate
+
+}
+}
+
+double getOrthocenter(double x1, double y1, double x2, double y2, double x3, double y3)
+{
+  double altSlope1;
+  double altSlope2;
+  double intercept1;
+  double intercept2;
+  double x;
+  double y;
+  
+  altSlope1 = (y2 - y1) / (x2 - x1);
+  altSlope1 = 1 / altSlope1;
+  intercept1altSlope1 * x3 + y3;
+  altSlope2 = (y3 - y2) / (x3 - x2);
+  altSlope2 = 1 / altSlope2;
+  intercept2 = altSlope2 * x1 + y1;
+  x = (intercept2 - intercept1) / (altSlope1 - altSlope2);
+  y = altSlope1 * x + intercept1;
+}
+
+double getInnerTriangleArea(double x1, double x2, double x3, double y1, double y2, double y3)
+{
+  double result; //declares variable to display result of area calculations
+  result = fabs((x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2);
+  return result;
+}
+
+/*Plan:
+* 1. function to get 3 user input points DONE
+* 2. function to find orthocenter DONE
+* 3. function to find area of three inner triangles
+* 4. 
+*/
