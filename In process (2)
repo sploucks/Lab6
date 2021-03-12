@@ -1,0 +1,173 @@
+#include <math.h>
+#include <stdio.h>
+
+double getCoordinate(char plane, int num);
+double getOrthocenterx(double x1, double y1, double x2, double y2, double x3, double y3);
+double getOrthocentery(double x1, double y1, double x2, double y2, double x3, double y3)
+double getTriangleArea(double x1, double x2, double x3, double y1, double y2, double y3);
+double getCircumcenter(double coord1, double coord2, double coord3, double angle1, double angle2, double angle3);
+double getNinepoint(double circCoord, double orthoCoord);
+double getAngle(double leglength1, double leglength2, double oppositelength);
+double getSidelength(double x1, double y1, double x2, double y2);
+double insideCircle(double area1, double area2, double area3, double totalArea);
+double displayResults(double x1, double, x2, double x3, double y1, double y2, double y3, INSIDE/OUTSIDE);
+
+int main()
+{ 
+  double xcoord1;
+  double xcoord2;
+  double xcoord3;
+  double ycoord1;
+  double ycoord2;
+  double ycoord3;
+  double length12;
+  double length23;
+  double length31;
+  double angle1;
+  double angle2;
+  double angle3;
+  double circumcenterX;
+  double circumcenterY;
+  double orthocenterX;
+  double orthocenterY;
+  double ninepointX;
+  double ninepointY;
+  double innerTriangleArea1; //inner triangle area within A to B
+  double innerTriangleArea2; //inner triangle area within B to C
+  double innerTriangleArea3; //inner triangle area within A to C
+  double outerTriangleArea;
+  char resultStr[];
+  
+  xcoord1 = getCoordinate("X", 1);
+  ycoord1 = getCoordinate("Y", 1);
+  xcoord2 = getCoordinate("X", 2);
+  ycoord2 = getCoordinate("Y", 2);
+  xcoord3 = getCoordinate("X", 3);
+  ycoord3 = getCoordinate("Y", 3);
+  
+  length12 = getSidelength(xcoord1, ycoord1, xcoord2, ycoord2);
+  length23 = getSidelength(xcoord2, ycoord2, xcoord3, ycoord3);
+  length31 = getSidelength(xcoord1, ycoord1, xcoord3, ycoord3);
+  
+  angle1 = getAngle(length12, length31, length23);
+  angle2 = getAngle(length12, length23, length31);
+  angle3 = getAngle(length12, length31, length23);
+  
+  circumcenterX = getCircumcenter(xcoord1, xcoord2, xcoord3, angle1, angle2, angle3);
+  circumcenterY = getCircumcenter(ycoord1, ycoord2, ycoord3, angle1, angle2, angle3);
+  
+  orthocenterX = getOrthocenterx(xcoord1, ycoord1, xcoord2, ycoord2, xcoord3, ycoord3);
+  orthocenterY = getOrthocentery(xcoord1, ycoord1, xcoord2, ycoord2, xcoord3, ycoord3);
+  
+  ninepointX = getNinepoint(circumcenterX, orthocenterX);
+  ninepointY = getNinepoint(circumcenterY, orthocenterY);
+  
+  innerTriangleArea1 = getTriangleArea(circumcenterX, xcoord1, xcoord2, circumcenterY, ycoord1, ycoord2);
+  innerTriangleArea2 = getTriangleArea(circumcenterX, xcoord2, xcoord3, circumcenterY, ycoord2, ycoord3);
+  innerTriangleArea3 = getTriangleArea(circumcenterX, xcoord1, xcoord3, circumcenterY, ycoord1, ycoord3);
+  outerTriangleArea = getTriangleArea(xcoord1, xcoord2, xcoord3, ycoord1, ycoord2, ycoord3);
+
+  resultStr[] = insideCircleSize(double area1, double area2, double area3, double totalArea); //might need to define size of string for this to work
+}
+
+double getCoordinate(char plane, int num)
+{
+  double point;
+	printf("Enter %c coordinate #%i ->", plane, num); 
+	scanf("%lf", &point);
+	return (point);
+}
+
+double getCircumcenter(double coord1, double coord2, double coord3, double angle1, double angle2, double angle3)
+{
+  double coordinate;
+  coordinate = (coord1 * sin(2 * angle1) + coord2 * sin(2 *angle2) + coord3 * sin(2 * angle3)) / (sin(2 * angle1) + sin(2 * angle2) + sin(2 * angle3));
+  return(coordinate);
+}
+
+double getNinepoint(double circCoord, double orthoCoord)
+{
+  double coord;
+  coord = (circCoord + orthoCoord) / 2;
+  return(coord);
+}
+
+double getOrthocenterx(double x1, double y1, double x2, double y2, double x3, double y3)
+{
+  double altSlope1;
+  double altSlope2;
+  double intercept1;
+  double intercept2;
+  double x;
+  
+  altSlope1 = (y2 - y1) / (x2 - x1);
+  altSlope1 = 1 / altSlope1;
+  intercept1 =altSlope1 * x3 + y3;
+  altSlope2 = (y3 - y2) / (x3 - x2);
+  altSlope2 = 1 / altSlope2;
+  intercept2 = altSlope2 * x1 + y1;
+  x = (intercept2 - intercept1) / (altSlope1 - altSlope2);
+  
+  return(x);
+}
+
+double getOrthocentery(double x1, double y1, double x2, double y2, double x3, double y3)
+{
+  double altSlope1;
+  double altSlope2;
+  double intercept1;
+  double intercept2;
+  double y;
+  
+  altSlope1 = (y2 - y1) / (x2 - x1);
+  altSlope1 = 1 / altSlope1;
+  intercept1 =altSlope1 * x3 + y3;
+  altSlope2 = (y3 - y2) / (x3 - x2);
+  altSlope2 = 1 / altSlope2;
+  intercept2 = altSlope2 * x1 + y1;
+  y = altSlope1 * x + intercept1;
+  
+  return(y);
+}
+
+double getTriangleArea(double x1, double x2, double x3, double y1, double y2, double y3)
+{
+  double result; //declares variable to display result of area calculations
+  result = fabs((x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2);
+  return result;
+}
+
+double getSidelength(double x1, double y1, double x2, double y2)
+{  
+  double length;
+  length = sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
+  return(length);
+}
+
+double getAngle(double leglength1, double leglength2, double oppositelength)
+{
+  double angle;
+  angle = acos((pow(leglength1, 2) + pow(leglength2, 2) - pow(oppositelength, 2)) / (2 * leglength1 * leglength2));
+  return(angle);
+}
+
+double insideCircle(double area1, double area2, double area3, double totalArea)
+{
+  int sizeStr;
+  double sumAreas;
+  char result[sizeStr];
+  sumAreas = area1 + area2 + area3;
+  sumAreas = round(sumAreas * 1000) / 1000;
+  
+  if ((sumAreas + 0.001) == totalArea) || ((sumAreas - 0.001) == totalArea)
+  {
+    sizeStr = 6;
+    result[sizeStr] = "inside";
+  }
+  else {
+    sizeStr = 7;
+    result[sizeStr] = "outside";
+  }
+
+  return(result);
+}
